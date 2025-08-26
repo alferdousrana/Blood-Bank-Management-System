@@ -1,0 +1,360 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blood Bank Management System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      height: 100vh;
+      background: linear-gradient(rgba(250, 0, 63, 0.4), rgba(212, 0, 46, 0.7)),
+      url('{% static "image/homepage.jpg" %}');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      position: relative;
+    }
+
+    .hero-content h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-content p {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: white;
+      color: #FA003F;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      color: #FA003F;
+      background: #f8f9fa;
+    }
+
+    .btn-secondary:hover {
+      background: white;
+      color: #FA003F;
+    }
+
+    /* Quick Access Section */
+    .quick-access {
+      padding: 80px 0;
+      background: #f8f9fa;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .section-title p {
+      font-size: 1.1rem;
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .access-card {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      height: 100%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .access-card:hover {
+      border-color: #FA003F;
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(250, 0, 63, 0.15);
+    }
+
+    .access-icon {
+      font-size: 4rem;
+      color: #FA003F;
+      margin-bottom: 20px;
+    }
+
+    .access-card h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .access-card p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .access-btn {
+      background: #FA003F;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .access-btn:hover {
+      background: #d4002e;
+      color: white;
+      text-decoration: none;
+      transform: translateY(-2px);
+    }
+
+    /* Stats Section */
+    .stats-section {
+      background: linear-gradient(135deg, #FA003F, #d4002e);
+      color: white;
+      padding: 60px 0;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero-content p {
+        font-size: 1.1rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .section-title h2 {
+        font-size: 2rem;
+      }
+
+      .stat-number {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  {% include "blood/navbar.html" %}
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content animate__animated animate__fadeInUp">
+      <h1>Save Lives, Donate Blood</h1>
+      <p>Your donation can make the difference between life and death</p>
+      <div class="cta-buttons">
+        <a href="/donor/donorlogin" class="cta-btn btn-primary">
+          <i class="fas fa-heart"></i> Become a Donor
+        </a>
+        <a href="/patient/patientlogin" class="cta-btn btn-secondary">
+          <i class="fas fa-search"></i> Find Blood
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Access Section -->
+  <section class="quick-access">
+    <div class="container">
+      <div class="section-title">
+        <h2>Quick Access Portal</h2>
+        <p>Choose your role to access the appropriate section of our blood bank management system.</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="access-card">
+            <div class="access-icon">
+              <i class="fas fa-procedures"></i>
+            </div>
+            <h3>Patient Portal</h3>
+            <p>Request blood and manage your medical information securely.</p>
+            <a href="/patient/patientlogin" class="access-btn">
+              Patient Login
+            </a>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="access-card">
+            <div class="access-icon">
+              <i class="fas fa-heart"></i>
+            </div>
+            <h3>Donor Portal</h3>
+            <p>Register as a donor and track your donation history.</p>
+            <a href="/donor/donorlogin" class="access-btn">
+              Donor Login
+            </a>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="access-card">
+            <div class="access-icon">
+              <i class="fas fa-user-shield"></i>
+            </div>
+            <h3>Admin Portal</h3>
+            <p>Manage the blood bank system and monitor operations.</p>
+            <a href="/adminlogin" class="access-btn">
+              Admin Login
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 col-sm-6">
+          <div class="stat-item">
+            <span class="stat-number">1250+</span>
+            <div class="stat-label">Lives Saved</div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <div class="stat-item">
+            <span class="stat-number">850+</span>
+            <div class="stat-label">Active Donors</div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <div class="stat-item">
+            <span class="stat-number">2500+</span>
+            <div class="stat-label">Blood Units</div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <div class="stat-item">
+            <span class="stat-number">15+</span>
+            <div class="stat-label">Years Service</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% include "blood/footer.html" %}
+
+  <script>
+    // Simple scroll animation
+    window.addEventListener('scroll', function () {
+      const elements = document.querySelectorAll('.access-card, .stat-item');
+      elements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+
+        if (elementTop < window.innerHeight - elementVisible) {
+          element.style.opacity = '1';
+          element.style.transform = 'translateY(0)';
+        }
+      });
+    });
+
+    // Initialize elements
+    document.addEventListener('DOMContentLoaded', function () {
+      const elements = document.querySelectorAll('.access-card, .stat-item');
+      elements.forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(30px)';
+        element.style.transition = 'all 0.6s ease';
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,210 @@
+{% extends 'patient/patientbase.html' %}
+{% block content %}
+{% load widget_tweaks %}
+{% load static %}
+
+<head>
+    <style>
+        .status-label {
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-approved {
+            background-color: #28a745;
+        }
+
+        .status-rejected {
+            background-color: #dc3545;
+        }
+
+        .status-pending {
+            background-color: #007bff;
+        }
+
+        .filter-tabs {
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-btn {
+            margin: 5px;
+            padding: 8px 20px;
+            border-radius: 25px;
+        }
+
+        .active-filter {
+            background-color: #007bff !important;
+            border-color: #007bff !important;
+            color: white !important;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .status-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .no-data-container {
+            text-align: center;
+            padding: 60px 20px;
+            background: #f8f9fa;
+        }
+
+        .contact-btn {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<div class="container mt-4">
+    <!-- Status Summary -->
+    <div class="status-summary">
+        <h5 class="text-center mb-4">Request Summary</h5>
+        <div class="row">
+            <div class="col-md-3 col-sm-6">
+                <div class="text-center">
+                    <span style="font-size: 2rem; font-weight: bold; display: block;">{{ total_requests }}</span>
+                    <span style="font-size: 0.9rem;">Total Requests</span>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="text-center">
+                    <span style="font-size: 2rem; font-weight: bold; display: block;">{{ pending_count }}</span>
+                    <span style="font-size: 0.9rem;">Pending</span>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="text-center">
+                    <span style="font-size: 2rem; font-weight: bold; display: block;">{{ approved_count }}</span>
+                    <span style="font-size: 0.9rem;">Approved</span>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="text-center">
+                    <span style="font-size: 2rem; font-weight: bold; display: block;">{{ rejected_count }}</span>
+                    <span style="font-size: 0.9rem;">Rejected</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+        <h4 class="text-center mb-3">My Blood Requests</h4>
+        <div class="text-center">
+            <a href="{% url 'my-request' %}?status=all"
+                class="btn btn-outline-primary filter-btn {% if current_filter == 'all' %}active-filter{% endif %}">
+                All Requests
+            </a>
+            <a href="{% url 'my-request' %}?status=pending"
+                class="btn btn-outline-warning filter-btn {% if current_filter == 'pending' %}active-filter{% endif %}">
+                Pending
+            </a>
+            <a href="{% url 'my-request' %}?status=approved"
+                class="btn btn-outline-success filter-btn {% if current_filter == 'approved' %}active-filter{% endif %}">
+                Approved
+            </a>
+            <a href="{% url 'my-request' %}?status=rejected"
+                class="btn btn-outline-danger filter-btn {% if current_filter == 'rejected' %}active-filter{% endif %}">
+                Rejected
+            </a>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container">
+        {% if blood_request %}
+        <table class="table table-light table-hover table-bordered table-striped mb-0">
+            <thead class="bg-dark">
+                <tr>
+                    <th scope="col" style="color: rgb(192, 192, 192);">Patient's Name</th>
+                    <th scope="col" style="color: rgb(192, 192, 192);">Age</th>
+                    <th scope="col" style="color: rgb(192, 192, 192);">Reason</th>
+                    <th scope="col" style="color: rgb(192, 192, 192);">Blood Group</th>
+                    <th scope="col" style="color: rgb(192, 192, 192);">Unit</th>
+                    <th scope="col" style="color: rgb(192, 192, 192);">Date</th>
+                    <th scope="col" style="color: rgb(192, 192, 192);">Status</th>
+                    <th scope="col" style="color: rgb(192, 192, 192);">Contact</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in blood_request %}
+                <tr>
+                    <td>{{t.patient_name}}</td>
+                    <td>{{t.patient_age}}</td>
+                    <td>{{t.reason}}</td>
+                    <td><strong>{{t.bloodgroup}}</strong></td>
+                    <td>{{t.unit}} ml</td>
+                    <td>{{t.date|date:"M d, Y"}}</td>
+                    <td>
+                        {% if t.status == 'Approved' %}
+                        <span class="status-label status-approved">Approved</span>
+                        {% elif t.status == 'Rejected' %}
+                        <span class="status-label status-rejected">Rejected</span>
+                        {% else %}
+                        <span class="status-label status-pending">Pending</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if t.status == 'Approved' %}
+                        <a href="https://wa.me/{{ settings.ADMIN_WHATSAPP_NUMBER }}" class="btn btn-primary contact-btn"
+                            target="_blank">
+                            <i class="fab fa-whatsapp"></i> Contact
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="no-data-container">
+            <h5 class="text-muted">
+                No
+                {% if current_filter == 'pending' %}
+                "Pending"
+                {% elif current_filter == 'approved' %}
+                "Approved"
+                {% elif current_filter == 'rejected' %}
+                "Rejected"
+                {% else %}
+                "Requests"
+                {% endif %}
+                found yet
+            </h5>
+            <p class="text-muted">
+                {% if current_filter == 'pending' %}
+                You don't have any pending requests.
+                {% elif current_filter == 'approved' %}
+                You don't have any approved requests.
+                {% elif current_filter == 'rejected' %}
+                You don't have any rejected requests.
+                {% else %}
+                You haven't made any blood requests yet.
+                {% endif %}
+            </p>
+            <a href="{% url 'make-request' %}" class="btn btn-primary">Make New Request</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

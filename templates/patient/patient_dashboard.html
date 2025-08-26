@@ -1,0 +1,140 @@
+{% extends 'patient/patientbase.html' %}
+{% block content %}
+
+<head>
+  <style>
+    .xyz {
+      color: blue;
+      font-size: 3ex;
+    }
+
+    .clickable-card {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .clickable-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .clickable-card .card {
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .clickable-card:hover .card {
+      border-color: #007bff;
+    }
+
+    .card-body {
+      position: relative;
+    }
+
+    .card-body::after {
+      content: "Click to view";
+      position: absolute;
+      bottom: 10px;
+      right: 15px;
+      font-size: 0.8rem;
+      color: #6c757d;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .clickable-card:hover .card-body::after {
+      opacity: 1;
+    }
+  </style>
+</head>
+<br><br>
+<div class="container">
+  <div class="row">
+    <!-- Request Made Card -->
+    <div class="col-sm-3">
+      <a href="{% url 'my-request' %}?status=all" class="clickable-card">
+        <div class="card bg-light">
+          <div class="card-body">
+            <div class="blood">
+              <i class="fa fa-user-plus xyz" style="color: #1e88e5;"></i>
+            </div><br>
+            <div>
+              Request Made <br>
+              {{requestmade}}
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Pending Request Card -->
+    <div class="col-sm-3">
+      <a href="{% url 'my-request' %}?status=pending" class="clickable-card">
+        <div class="card bg-light">
+          <div class="card-body">
+            <div class="blood">
+              <i class="fas fa-sync xyz" style="color:#efb000;"></i>
+            </div><br>
+            <div>
+              Pending Request <br>
+              {{requestpending}}
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Approved Request Card -->
+    <div class="col-sm-3">
+      <a href="{% url 'my-request' %}?status=approved" class="clickable-card">
+        <div class="card bg-light">
+          <div class="card-body">
+            <div class="blood">
+              <i class="fas fa-check-circle xyz" style="color: green;"></i>
+            </div><br>
+            <div>
+              Approved Request<br>
+              {{requestapproved}}
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Rejected Request Card -->
+    <div class="col-sm-3">
+      <a href="{% url 'my-request' %}?status=rejected" class="clickable-card">
+        <div class="card bg-light">
+          <div class="card-body">
+            <div class="blood">
+              <i class="fas fa-times-circle xyz" style="color: red;"></i>
+            </div><br>
+            <div>
+              Rejected Request <br>
+              {{requestrejected}}
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Add click animation
+  document.querySelectorAll('.clickable-card').forEach(card => {
+    card.addEventListener('click', function (e) {
+      // Add a small animation on click
+      this.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        this.style.transform = '';
+      }, 150);
+    });
+  });
+</script>
+
+{% endblock content %}
